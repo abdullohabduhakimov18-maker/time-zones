@@ -1,0 +1,6 @@
+{
+  "name": "US Time Zones & States Interactive Map Explorer",
+  "description": "Comprehensive interactive US maps covering time zones, full state names, postal abbreviations, state capitals, and live current clocks with searchable data table.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
