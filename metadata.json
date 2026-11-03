@@ -1,6 +1,6 @@
 {
-  "name": "US Time Zones & States Interactive Map Explorer",
-  "description": "Comprehensive interactive US maps covering time zones, full state names, postal abbreviations, state capitals, and live current clocks with searchable data table.",
+  "name": "LogistMate 3D Truck Types & Logistics Guide",
+  "description": "Interactive 3D vehicle visualizer and comprehensive educational guide explaining truck and trailer types, freight capacities, dimensions, and operational differences for logistics professionals.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

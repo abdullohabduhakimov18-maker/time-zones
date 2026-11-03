@@ -10,8 +10,10 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
 async function startServer() {
-  const distPath = path.resolve(__dirname, 'dist');
-  const hasDist = fs.existsSync(distPath);
+  const distPath = fs.existsSync(path.resolve(__dirname, 'dist'))
+    ? path.resolve(__dirname, 'dist')
+    : (fs.existsSync(path.resolve(process.cwd(), 'dist')) ? path.resolve(process.cwd(), 'dist') : __dirname);
+  const hasDist = fs.existsSync(path.resolve(distPath, 'index.html'));
 
   // If in development and dist doesn't exist, mount Vite middlewares
   if (process.env.NODE_ENV !== 'production' && !hasDist) {
