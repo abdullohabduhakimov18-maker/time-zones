@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { TruckTypeData } from '../data/truckTypesData';
 import { Truck } from 'lucide-react';
 
+// Global cache of successfully loaded and decoded image URLs
+const loadedImageCache = new Set<string>();
+
 interface TruckImageProps {
   truck: TruckTypeData;
   className?: string;
   containerClassName?: string;
   isTransparentBlend?: boolean;
+  isThumbnail?: boolean;
   onLoaded?: () => void;
   alt?: string;
 }
@@ -16,31 +20,56 @@ export const TruckImage: React.FC<TruckImageProps> = ({
   className = 'w-full h-auto object-contain',
   containerClassName = '',
   isTransparentBlend = false,
+  isThumbnail = false,
   onLoaded,
   alt
 }) => {
-  // Try primary (Vite bundled asset) first, then fallback to static public URL
-  const [currentSrc, setCurrentSrc] = useState<string>(truck.publicImagePath || truck.realImagePath);
+  // Determine best image source: tiny WebP thumbnail for step buttons, optimized WebP for main view
+  const primarySrc = isThumbnail
+    ? (truck.thumbImagePath || `/images/trucks/${truck.id}-thumb.webp`)
+    : (truck.webpImagePath || truck.publicImagePath || `/images/trucks/${truck.id}.webp`);
+
+  const fallbackJpg = `/images/trucks/${truck.id}.jpg`;
+
+  const [currentSrc, setCurrentSrc] = useState<string>(primarySrc);
   const [hasError, setHasError] = useState<boolean>(false);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  // If already loaded in memory, render immediately with 0ms delay
+  const [isLoaded, setIsLoaded] = useState<boolean>(() => loadedImageCache.has(primarySrc));
   const [triedFallback, setTriedFallback] = useState<boolean>(false);
 
   useEffect(() => {
-    // When truck changes, reset error & loaded state
-    setCurrentSrc(truck.publicImagePath || truck.realImagePath);
+    const nextSrc = isThumbnail
+      ? (truck.thumbImagePath || `/images/trucks/${truck.id}-thumb.webp`)
+      : (truck.webpImagePath || truck.publicImagePath || `/images/trucks/${truck.id}.webp`);
+
+    setCurrentSrc(nextSrc);
     setHasError(false);
-    setIsLoaded(false);
     setTriedFallback(false);
-  }, [truck.id, truck.realImagePath, truck.publicImagePath]);
+
+    // If this specific URL was already loaded in browser session, display immediately without flashing
+    if (loadedImageCache.has(nextSrc)) {
+      setIsLoaded(true);
+    } else {
+      setIsLoaded(false);
+    }
+  }, [truck.id, isThumbnail, truck.thumbImagePath, truck.webpImagePath, truck.publicImagePath]);
+
+  const handleLoad = () => {
+    loadedImageCache.add(currentSrc);
+    setIsLoaded(true);
+    if (onLoaded) {
+      onLoaded();
+    }
+  };
 
   const handleError = () => {
     if (!triedFallback) {
       setTriedFallback(true);
-      // Try switching between realImagePath and publicImagePath
-      if (currentSrc === truck.publicImagePath && truck.realImagePath) {
+      // Fallback from WebP to optimized JPEG or bundled asset
+      if (currentSrc !== fallbackJpg) {
+        setCurrentSrc(fallbackJpg);
+      } else if (truck.realImagePath && currentSrc !== truck.realImagePath) {
         setCurrentSrc(truck.realImagePath);
-      } else if (truck.publicImagePath) {
-        setCurrentSrc(truck.publicImagePath);
       } else {
         setHasError(true);
       }
@@ -49,52 +78,42 @@ export const TruckImage: React.FC<TruckImageProps> = ({
     }
   };
 
-  const handleLoad = () => {
-    setIsLoaded(true);
-    if (onLoaded) {
-      onLoaded();
-    }
-  };
-
   if (hasError) {
-    // Elegant SVG fallback with truck details if image completely fails
     return (
-      <div className={`flex flex-col items-center justify-center p-6 bg-slate-50 rounded-xl border border-slate-200 text-center select-none ${containerClassName}`}>
-        <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#02a2f0] mb-3">
-          <Truck className="w-7 h-7" />
+      <div className={`flex flex-col items-center justify-center p-4 bg-slate-50 rounded-xl border border-slate-200 text-center select-none ${containerClassName}`}>
+        <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#02a2f0] mb-2">
+          <Truck className="w-5 h-5" />
         </div>
-        <div className="font-extrabold text-sm text-slate-800">{truck.name}</div>
-        <div className="text-xs text-slate-500 font-medium mt-1">{truck.category}</div>
-        <div className="mt-2 text-[10px] font-mono font-semibold px-2.5 py-1 bg-white rounded-md border border-slate-200 text-slate-600">
-          {truck.length} · {truck.maxCargoWeightLbs.toLocaleString()} lbs Payload
-        </div>
+        <div className="font-extrabold text-xs text-slate-800">{truck.name}</div>
+        <div className="text-[10px] text-slate-400 font-medium mt-0.5">{truck.category}</div>
       </div>
     );
   }
 
   return (
     <div className={`relative overflow-hidden ${containerClassName}`}>
-      {/* Loading Skeleton Pulse */}
+      {/* Ultra-light skeleton that disappears the instant the image is cached */}
       {!isLoaded && (
-        <div className="absolute inset-0 bg-slate-50 flex items-center justify-center z-0">
-          <div className="flex items-center gap-2 text-slate-400 text-xs font-semibold">
-            <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-300 border-t-[#02a2f0] animate-spin" />
-            <span>Loading {truck.name.split(' ')[0]} photo...</span>
-          </div>
+        <div className="absolute inset-0 bg-slate-50/80 flex items-center justify-center z-0 transition-opacity duration-150">
+          <div className="w-3.5 h-3.5 rounded-full border-2 border-slate-300 border-t-[#02a2f0] animate-spin" />
         </div>
       )}
 
-      {/* Main Image */}
+      {/* High-speed image tag */}
       <img
         src={currentSrc}
         alt={alt || `${truck.name} - ${truck.category}`}
         loading="eager"
         decoding="async"
+        fetchPriority={isThumbnail ? 'low' : 'high'}
         onLoad={handleLoad}
         onError={handleError}
-        className={`${className} transition-opacity duration-300 ${
+        className={`${className} ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         } ${isTransparentBlend ? 'mix-blend-multiply' : ''}`}
+        style={{
+          transition: isLoaded ? 'none' : 'opacity 0.15s ease-out'
+        }}
       />
     </div>
   );

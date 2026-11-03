@@ -26,16 +26,19 @@ export default function App() {
     document.documentElement.classList.remove('dark');
   }, []);
 
-  // Pre-decode and cache all 6 truck images into browser memory immediately
+  // Pre-decode and cache all 6 truck images and thumbnails into browser memory immediately
   useEffect(() => {
     TRUCK_TYPES.forEach(t => {
-      if (t.publicImagePath) {
-        const img = new Image();
-        img.src = t.publicImagePath;
+      if (t.thumbImagePath) {
+        const thumb = new Image();
+        thumb.src = t.thumbImagePath;
+        if ('decode' in thumb) thumb.decode().catch(() => {});
       }
-      if (t.realImagePath && t.realImagePath !== t.publicImagePath) {
-        const img2 = new Image();
-        img2.src = t.realImagePath;
+      const mainSrc = t.webpImagePath || t.publicImagePath;
+      if (mainSrc) {
+        const img = new Image();
+        img.src = mainSrc;
+        if ('decode' in img) img.decode().catch(() => {});
       }
     });
   }, []);

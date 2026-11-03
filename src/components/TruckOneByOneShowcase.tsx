@@ -111,6 +111,7 @@ export const TruckOneByOneShowcase: React.FC<TruckOneByOneShowcaseProps> = ({
                 <div className="w-10 h-7 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200">
                   <TruckImage
                     truck={t}
+                    isThumbnail={true}
                     className="w-full h-full object-cover"
                   />
                 </div>

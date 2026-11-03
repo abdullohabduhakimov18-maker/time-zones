@@ -38,6 +38,8 @@ export interface TruckTypeData {
   badge: string;
   realImagePath: string;
   publicImagePath: string;
+  webpImagePath?: string;
+  thumbImagePath?: string;
   color: string;
   shortDescription: string;
   fullDescription: string;
@@ -73,7 +75,9 @@ export const TRUCK_TYPES: TruckTypeData[] = [
     category: 'Enclosed General Freight',
     badge: 'Most Common (70% of US Freight)',
     realImagePath: dryVanImg,
-    publicImagePath: '/images/trucks/dry-van.jpg',
+    publicImagePath: '/images/trucks/dry-van.webp',
+    webpImagePath: '/images/trucks/dry-van.webp',
+    thumbImagePath: '/images/trucks/dry-van-thumb.webp',
     color: '#02a2f0',
     shortDescription: 'The universal workhorse of domestic logistics. Completely enclosed 53-foot trailer protecting non-perishable palletized consumer freight from weather, road debris, and theft.',
     fullDescription: 'Dry vans represent over two-thirds of all commercial trailers on American highways. Measuring 53 feet in length and 102 inches in width, they provide 4,000+ cubic feet of volume. Featuring thin, lightweight composite sidewalls, a translucent or aluminum roof, and wood flooring, they are loaded exclusively through rear double doors at dock-height facilities.',
@@ -226,7 +230,9 @@ export const TRUCK_TYPES: TruckTypeData[] = [
     category: 'Temperature-Controlled Carrier',
     badge: 'Perishable & High-Value Cargo',
     realImagePath: reeferImg,
-    publicImagePath: '/images/trucks/reefer.jpg',
+    publicImagePath: '/images/trucks/reefer.webp',
+    webpImagePath: '/images/trucks/reefer.webp',
+    thumbImagePath: '/images/trucks/reefer-thumb.webp',
     color: '#06b6d4',
     shortDescription: 'Insulated 53-foot trailer with an independent front-mounted diesel refrigeration unit maintaining precise climate from -20°F up to +70°F.',
     fullDescription: 'Reefer trailers feature 2 to 3 inches of high-density polyurethane foam insulation throughout the ceiling, sidewalls, and floor. An independent nose-mounted diesel refrigeration unit (Carrier Vector or Thermo King Precedent) pumps conditioned air through ceiling ducts and extruded aluminum T-duct flooring. Transports fresh produce, pharmaceuticals, meat, ice cream, and frozen poultry.',
@@ -364,7 +370,9 @@ export const TRUCK_TYPES: TruckTypeData[] = [
     category: 'Open Deck Cargo Platform',
     badge: 'Heavy Industrial & Building Materials',
     realImagePath: flatbedImg,
-    publicImagePath: '/images/trucks/flatbed.jpg',
+    publicImagePath: '/images/trucks/flatbed.webp',
+    webpImagePath: '/images/trucks/flatbed.webp',
+    thumbImagePath: '/images/trucks/flatbed-thumb.webp',
     color: '#f59e0b',
     shortDescription: 'Open steel and hardwood platform trailer with no sides, walls, or roof. Built for fast crane or forklift loading of oversized, heavy, and long industrial cargo.',
     fullDescription: 'Flatbeds provide an unrestricted 48-foot or 53-foot flat wooden deck. With no walls, ceiling, or door frames, freight can be lowered onto the deck from above by overhead gantry cranes or loaded from both sides simultaneously by forklifts. Drivers must be physically fit and proficient in tarping and tie-down securement.',
@@ -511,7 +519,9 @@ export const TRUCK_TYPES: TruckTypeData[] = [
     category: 'Drop-Frame Machinery Hauler',
     badge: 'Tall Freight & Equipment Specialist',
     realImagePath: stepDeckImg,
-    publicImagePath: '/images/trucks/step-deck.jpg',
+    publicImagePath: '/images/trucks/step-deck.webp',
+    webpImagePath: '/images/trucks/step-deck.webp',
+    thumbImagePath: '/images/trucks/step-deck-thumb.webp',
     color: '#8b5cf6',
     shortDescription: 'Drop-frame trailer with an upper deck and a dropped lower deck riding only 38"–40" above the ground, allowing tall cargo up to 10\' 6" to clear highway bridges legally.',
     fullDescription: 'Step deck trailers feature a structural gooseneck that drops the main cargo deck down immediately after passing the tractor fifth wheel. While a standard flatbed deck sits 60 inches off the road, a step deck\'s lower well sits only 38 to 42 inches above the asphalt. This 18-to-20-inch height advantage allows tall industrial equipment to travel without expensive over-height permits.',
@@ -652,7 +662,9 @@ export const TRUCK_TYPES: TruckTypeData[] = [
     category: 'Medium-Duty Straight Truck',
     badge: 'Last-Mile & Urban Delivery Master',
     realImagePath: boxTruckImg,
-    publicImagePath: '/images/trucks/box-truck.jpg',
+    publicImagePath: '/images/trucks/box-truck.webp',
+    webpImagePath: '/images/trucks/box-truck.webp',
+    thumbImagePath: '/images/trucks/box-truck-thumb.webp',
     color: '#10b981',
     shortDescription: 'Rigid single-chassis commercial delivery vehicle with a 26-foot dry freight box and hydraulic rear liftgate. Essential for tight city streets, shopping centers, and residential deliveries.',
     fullDescription: 'Unlike articulated tractor-trailers, straight box trucks have the driver cab and cargo body permanently mounted onto a single rigid steel frame. Equipped with a hydraulic tuck-under liftgate that lowers pallets from truck floor height down to the asphalt, they provide the backbone of urban e-commerce and retail delivery where 53-foot semi-trucks are banned.',
@@ -784,7 +796,9 @@ export const TRUCK_TYPES: TruckTypeData[] = [
     category: 'Liquid / Fluid Bulk Hauler',
     badge: 'Bulk Liquids & Chemical Specialist',
     realImagePath: tankerImg,
-    publicImagePath: '/images/trucks/tanker.jpg',
+    publicImagePath: '/images/trucks/tanker.webp',
+    webpImagePath: '/images/trucks/tanker.webp',
+    thumbImagePath: '/images/trucks/tanker-thumb.webp',
     color: '#ec4899',
     shortDescription: 'Cylindrical stainless steel or aluminum tank trailer engineered for bulk liquid transport. Equipped with internal baffles to prevent dynamic fluid surge.',
     fullDescription: 'Liquid bulk tankers are precision pressure vessels designed to carry liquid foods (milk, juices, vegetable oils) or fuels and chemicals. The cylindrical shape provides high structural strength and a low aerodynamic profile. Drivers must possess specialized tanker endorsements due to the dangerous dynamic fluid surge during acceleration and braking.',
